@@ -1,0 +1,80 @@
+ <head>   
+     
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    crossorigin=""></script>
+
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+     <script src="convex-hull.js"></script>
+
+     
+ 
+</head> 
+
+
+
+
+<body>
+
+<h1> Convex Hull</h1>
+<div id='leafletmap'  style="height: 500px; width=600px"></div>
+    
+
+<script>
+
+
+    
+function createPointsArray() {
+    var latlngArray = [];
+    latlngArray.push(L.latLng(50.5, 30.5))
+    latlngArray.push(L.latLng(51.5, 31.5))
+    latlngArray.push(L.latLng(51.5, 32.5))
+    latlngArray.push(L.latLng(50.7, 30.7))
+    latlngArray.push(L.latLng(50.8, 30.6))
+    latlngArray.push(L.latLng(51.5, 33.5))
+    latlngArray.push(L.latLng(53, 32.3))
+    latlngArray.push(L.latLng(51.7, 30.2))
+    
+    return latlngArray;          
+}
+    
+function showConvexHull() {  
+    var pointsArray = createPointsArray();
+    pointsArray.forEach(function(element) { L.marker(element).addTo(mymap)});
+    var points = pointsArray.map(function (element) {
+        return {
+            x: element.lat,
+            y: element.lng
+            }
+        }
+    )
+    var convexHullPoints = convexHull(points);
+    var leafletHull = convexHullPoints.map(function (element) {return ([element.x,element.y])})
+    var convexHullPolygon = L.polygon(leafletHull).addTo(mymap);
+    
+    var bounds = convexHullPolygon.getBounds();
+    mymap.fitBounds(bounds);
+
+}
+    
+$(document).ready(function() {    
+showConvexHull();
+})
+
+
+var mymap = L.map('leafletmap', {center:[0, 0],
+                             zoom: 15,
+                             zoomControl:false});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 15,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+}).addTo(mymap);
+
+
+    
+</script>
+
+</body>
+
