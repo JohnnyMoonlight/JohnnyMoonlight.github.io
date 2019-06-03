@@ -19,24 +19,21 @@
 
 <script>
 
-function createPointsArray() {
-    var latlngArray = [];
-    latlngArray.push(L.latLng(50.5, 30.5))
-    latlngArray.push(L.latLng(51.5, 31.5))
-    latlngArray.push(L.latLng(51.5, 32.5))
-    latlngArray.push(L.latLng(50.7, 30.7))
-    latlngArray.push(L.latLng(50.8, 30.6))
-    latlngArray.push(L.latLng(51.5, 33.5))
-    latlngArray.push(L.latLng(53, 32.3))
-    latlngArray.push(L.latLng(51.7, 30.2))
+var latlngArray = [];
+latlngArray.push(L.latLng(50.5, 30.5))
+latlngArray.push(L.latLng(51.5, 31.5))
+latlngArray.push(L.latLng(51.5, 32.5))
+latlngArray.push(L.latLng(50.7, 30.7))
+latlngArray.push(L.latLng(50.8, 30.6))
+latlngArray.push(L.latLng(51.5, 33.5))
+latlngArray.push(L.latLng(53, 32.3))
+latlngArray.push(L.latLng(51.7, 30.2))
     
-    return latlngArray;          
-}
     
-function showConvexHull() {  
-    var pointsArray = createPointsArray();
-    pointsArray.forEach(function(element) { L.marker(element).addTo(mymap)});
-    var points = pointsArray.map(function (element) {
+function showConvexHull(latlngArray) {  
+    
+    latlngArray.forEach(function(element) { L.marker(element).addTo(mymap)});
+    var points = latlngArray.map(function (element) {
         return {
             x: element.lat,
             y: element.lng
